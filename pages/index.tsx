@@ -1,39 +1,46 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Footer from '../components/footer'
+import React from 'react';
+import {
+  Container,
+  Box,
+  Grid
+} from '@material-ui/core';
+import Link from '../src/Link';
+import { PageTitle } from '../components/PageTitle';
+import { OverviewCard } from '../components/OverviewCard';
 
-export default function Home() {
+export default function Index() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Matslumparn</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Matslumparn
-        </h1>
-
-        <div className={styles.grid}>
-          <a href="#" className={styles.card}>
-            <h4>1 Mars 2021</h4>
-            <h3>Måndag</h3>
-            <p>Idag blir det soppa.</p>
-          </a>
-          <a href="#" className={styles.card}>
-            <h4>2 Mars 2021</h4>
-            <h3>Tisdag</h3>
-            <p>Imorgon blir det pizza.</p>
-          </a>
-          <a href="#" className={styles.card}>
-            <h4>3 Mars 2021</h4>
-            <h3>Onsdag</h3>
-            <p>I övermorgon blir det pasta.</p>
-          </a>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  )
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <PageTitle text="Matsedel"/>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="stretch"
+          spacing={5}
+        >
+          <Grid item>
+            <OverviewCard
+              preTitle="Måndag"
+              secondaryPreTitle="1 Mars 2021"
+              title="Idag"
+              comment="Den vanliga lasagnen vi brukar göra."
+            />
+          </Grid>
+          <Grid item>
+            <OverviewCard
+              preTitle="2 Mars 2021"
+              secondaryPreTitle="1 Mars 2021"
+              title="Imorgon"
+              comment="Pannkakor, ej veganska."
+            />
+          </Grid>
+        </Grid>
+        <Link href="/nytt-recept" color="primary">
+          Lägg till nytt recept
+        </Link>
+      </Box>
+    </Container>
+  );
 }
