@@ -23,9 +23,9 @@ CREATE TABLE recipe_ingredient (
   unit TEXT
 );
 
-INSERT INTO recipes (name, url) values ('Lasagne', 'https://www.lasagne.se', 'En kommentar');
-INSERT INTO recipes (name, url) values ('Pannkakor', 'https://www.pannkakor.se', 'En kommentar');
-INSERT INTO recipes (name, url) values ('Linsgryta', 'https://www.linsgryta.se', 'En kommentar');
+INSERT INTO recipes (name, url, comment) values ('Lasagne', 'https://www.lasagne.se', 'En kommentar');
+INSERT INTO recipes (name, url, comment) values ('Pannkakor', 'https://www.pannkakor.se', 'En kommentar');
+INSERT INTO recipes (name, url, comment) values ('Linsgryta', 'https://www.linsgryta.se', 'En kommentar');
 
 INSERT INTO ingredients (name, category, subCategory, brand, comment) values ('Lasagneplattor', 'Pasta', 'Torr', 'ICA', 'En kommentar');
 INSERT INTO ingredients (name, category, subCategory, brand, comment) values ('Krossade Tomater', 'Konserver', 'Torr', 'Änglamark', 'En kommentar');
@@ -38,7 +38,7 @@ INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (1, 
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (2, 3, 6, 'dl');
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (2, 4, 4, 'dl');
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (3, 2, 400, 'gram');
-INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (3, 6, 3, 'dl');
+INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (3, 5, 3, 'dl');
 
 -- DOWN
 DROP TABLE recipes;

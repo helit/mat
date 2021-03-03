@@ -14,9 +14,7 @@ export default async function getIngredientsByRecipeId(req: NextApiRequest, res:
 
   const allIngredients = await db.all(
     `SELECT
-      i.id,
-      i.item,
-      i.type,
+      i.*,
       ri.amount,
       ri.unit
     FROM
