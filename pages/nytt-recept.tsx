@@ -1,12 +1,10 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
 import {
-  Button,
+  Container,
   TextField,
   Box
 } from '@material-ui/core';
-import Link from '../src/Link';
-import { Form } from '../components/form';
+import { Form } from '../components/Form';
 import { PageTitle } from '../components/PageTitle';
 
 export default function NyttRecept() {
@@ -23,3 +21,5 @@ export default function NyttRecept() {
     </Container>
   )
 }
+
+
