@@ -23,9 +23,26 @@ CREATE TABLE recipe_ingredient (
   unit TEXT
 );
 
-INSERT INTO recipes (name, url, comment) values ('Lasagne', 'https://www.lasagne.se', 'En kommentar');
-INSERT INTO recipes (name, url, comment) values ('Pannkakor', 'https://www.pannkakor.se', 'En kommentar');
-INSERT INTO recipes (name, url, comment) values ('Linsgryta', 'https://www.linsgryta.se', 'En kommentar');
+INSERT INTO recipes (name, url, comment) values (
+  'Tomatpasta med rostade kikärtor',
+  'https://undertian.com/recept/snabb-tomatpasta-med-rostade-kikartor/',
+  'En kommentar'
+);
+INSERT INTO recipes (name, url, comment) values (
+  'Poké bowl',
+  'https://www.javligtgott.se/vegansk-poke-bowl/',
+  'En kommentar'
+);
+INSERT INTO recipes (name, url, comment) values (
+  'Korv & Bröd med pålägg',
+  'https://www.javligtgott.se/tre-ruggigt-goda-toppings-till-korv-med-brod/',
+  'En kommentar'
+);
+INSERT INTO recipes (name, url, comment) values (
+  'Pizza',
+  'https://www.koket.se/leilas-blogg/leila-lindholm/leilas-pizzadeg/',
+  'En kommentar'
+);
 
 INSERT INTO ingredients (name, category, subCategory, brand, comment) values ('Lasagneplattor', 'Pasta', 'Torr', 'ICA', 'En kommentar');
 INSERT INTO ingredients (name, category, subCategory, brand, comment) values ('Krossade Tomater', 'Konserver', 'Torr', 'Änglamark', 'En kommentar');
@@ -39,6 +56,8 @@ INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (2, 
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (2, 4, 4, 'dl');
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (3, 2, 400, 'gram');
 INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (3, 5, 3, 'dl');
+INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (4, 4, 7, 'dl');
+INSERT INTO recipe_ingredient (recipeId, ingredientId, amount, unit) values (4, 2, 400, 'gram');
 
 -- DOWN
 DROP TABLE recipes;
