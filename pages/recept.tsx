@@ -26,6 +26,7 @@ import { AutoCompleteSelect } from '../components/Input/AutoCompleteSelect';
 import TextInput from '../components/Input/TextInput';
 import NumberInput from '../components/Input/NumberInput';
 import SelectInput from '../components/Input/SelectInput';
+import { NetworkCheckOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +69,12 @@ interface Ingredient {
   comment: string,
 }
 
+interface NewRecipe {
+  name: string,
+  url: string,
+  comment: string
+}
+
 interface NewIngredient {
   key: number,
   label: string,
@@ -75,6 +82,12 @@ interface NewIngredient {
   recipeId: number,
   amount: number | string,
   unit: string
+}
+
+const newRecipeEmpty: NewRecipe = {
+  name: '',
+  url: '',
+  comment: ''
 }
 
 const newIngredientEmpty: NewIngredient = {
@@ -90,8 +103,7 @@ export default function Recept({ recipes, ingredients }) {
   const classes = useStyles();
   const [newIngredient, setNewIngredient] = useState<NewIngredient>(newIngredientEmpty);
   const [newIngredientList, setNewIngredientList] = useState<NewIngredient[]>([]);
-  const [amount, setAmount] = useState('');
-  const [unit, setUnit] = useState('');
+  const [newRecipe, setNewRecipe] = useState<NewRecipe>(newRecipeEmpty);
   const [ingredient, setIngredient] = useState<Ingredient>(null);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
@@ -99,41 +111,54 @@ export default function Recept({ recipes, ingredients }) {
     validateIngredientInputs();
   }, [newIngredient]);
 
-  const handleSaveRecipe = () => {
-    // console.log('url', recipeUrl);
-    // console.log('comment', recipeComment);
-    // console.log('ingredientData', ingredientData);
+  const handleSaveRecipe = async () => {
+    console.log('Recipe', newRecipe);
+    console.log('Ingredients', newIngredientList);
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newRecipe.name,
+          url: newRecipe.url,
+          comment: newRecipe.comment
+        })
+    };
+    const response = await fetch('http://localhost:3000/api/recipes', requestOptions);
+    const data = await response.json();
+
+    if (!data) {
+      console.log(error);
+    } else {
+      console.log(data.id);
+    }
   };
 
-  const updateIngredient = (value) => {
-    console.log('updateIngredient', value);
-    setIngredient(value);
-    setNewIngredient({
-      ...newIngredient,
-      key: value.id,
-      label: value.name,
-      ingredientId: value.id,
+  const updateRecipe = (value, id) => {
+    setNewRecipe({
+      ...newRecipe,
+      [id]: value
     });
   }
 
-  const updateAmount = (value) => {
-    console.log('updateAmount', value);
-    setNewIngredient({
-      ...newIngredient,
-      amount: value
-    });
-  }
-
-  const updateUnit = (value) => {
-    console.log('updateUnit', value);
-    setNewIngredient({
-      ...newIngredient,
-      unit: value
-    });
+  const updateIngredient = (value, id) => {
+    if (id === 'ingredient') {
+      setIngredient(value);
+      setNewIngredient({
+        ...newIngredient,
+        key: value.id,
+        label: value.name,
+        ingredientId: value.id,
+      });
+    } else {
+      setNewIngredient({
+        ...newIngredient,
+        [id]: value
+      });
+    }
   }
 
   const validateIngredientInputs = () => {
-    console.log('validate', newIngredient);
     if (
       newIngredient.ingredientId !== null &&
       newIngredient.amount > 0 &&
@@ -149,6 +174,7 @@ export default function Recept({ recipes, ingredients }) {
     newIngredient.label += ', ' + newIngredient.amount + ' ' + newIngredient.unit;
     setNewIngredientList([...newIngredientList, newIngredient]);
     setNewIngredient(newIngredientEmpty);
+    setIngredient(null);
     setButtonDisabled(true);
   };
 
@@ -167,9 +193,24 @@ export default function Recept({ recipes, ingredients }) {
           <AddButton buttonText={'Nytt recept'}>
             <Form title="Nytt Recept" type="recipe">
               <Box display="flex" flexDirection="column">
-                {/* <TextInput label={'Namn'} fullWidth={true} />
-                <TextInput label={'Länk'} fullWidth={true} />
-                <TextInput label={'Kommentar'} fullWidth={true} /> */}
+                <TextInput
+                  label={'Namn'}
+                  fullWidth={true}
+                  id={'name'}
+                  value={newRecipe.name}
+                  handleChange={updateRecipe.bind(this)} />
+                <TextInput
+                  label={'Länk'}
+                  fullWidth={true}
+                  id={'url'}
+                  value={newRecipe.url}
+                  handleChange={updateRecipe.bind(this)} />
+                <TextInput
+                  label={'Kommentar'}
+                  fullWidth={true}
+                  id={'comment'}
+                  value={newRecipe.comment}
+                  handleChange={updateRecipe.bind(this)} />
               </Box>
               <Box
                 mt={4}
@@ -178,14 +219,16 @@ export default function Recept({ recipes, ingredients }) {
                 <AutoCompleteSelect
                   label={'Ingrediens'}
                   options={ingredients}
+                  id={'ingredient'}
                   value={ingredient}
                   handleChange={updateIngredient.bind(this)} />
                 <NumberInput
                   label={'Mängd'}
                   fullWidth={false}
                   variant={'outlined'}
+                  id={'amount'}
                   value={newIngredient.amount}
-                  handleChange={updateAmount.bind(this)} />
+                  handleChange={updateIngredient.bind(this)} />
                 <SelectInput
                   label={'Enhet'}
                   options={[
@@ -197,8 +240,9 @@ export default function Recept({ recipes, ingredients }) {
                     {name: 'Deciliter', value: 'dl'},
                   ]}
                   variant={'outlined'}
+                  id={'unit'}
                   value={newIngredient.unit}
-                  handleChange={updateUnit.bind(this)} />
+                  handleChange={updateIngredient.bind(this)} />
                 <Box
                   alignSelf="center"
                 >

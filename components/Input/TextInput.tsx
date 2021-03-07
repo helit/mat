@@ -20,11 +20,12 @@ type TextInputProps = {
   label: string,
   fullWidth: boolean,
   value: string,
+  id: string,
   variant?: 'filled' | 'outlined' | 'standard',
-  handleChange?: (v: any) => any
+  handleChange?: (v1: any, v2: string) => any
 };
 
-export default function TextInput({label, fullWidth, value, variant, handleChange}: TextInputProps) {
+export default function TextInput({label, fullWidth, value, id, variant, handleChange}: TextInputProps) {
   const classes = useStyles();
 
   return (
@@ -33,7 +34,7 @@ export default function TextInput({label, fullWidth, value, variant, handleChang
         label={label}
         fullWidth={fullWidth}
         value={value}
-        onChange={(event) => handleChange(event)}
+        onChange={(event) => handleChange(event.target.value, id)}
         variant={variant ? variant : 'standard'}/>
     </FormControl>
   );

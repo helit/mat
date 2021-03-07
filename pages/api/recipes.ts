@@ -19,15 +19,21 @@ export default async function getRecipes(
       'INSERT INTO recipes (name, url, comment) VALUES (?, ?, ?)'
     );
 
-    await statement.run(
+    const result = await statement.run(
       req.body.name,
       req.body.url,
       req.body.comment
     );
+
+    const recipe = await db.get('SELECT * FROM recipes WHERE id = ?', [result.lastID]);
+
+    res.json(recipe);
   }
 
   // Get
-  const recipes = await db.all('SELECT * FROM recipes');
+  if (req.method === 'GET') {
+    const recipes = await db.all('SELECT * FROM recipes');
 
-  res.json(recipes);
+    res.json(recipes);
+  }
 }

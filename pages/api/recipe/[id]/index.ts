@@ -25,7 +25,7 @@ export default async function getRecipeById(req: NextApiRequest, res: NextApiRes
   }
 
   // Get
-  const recipe = await db.get  ('SELECT * FROM recipes WHERE id = ?', [req.query.id]);
+  const recipe = await db.get('SELECT * FROM recipes WHERE id = ?', [req.query.id]);
 
   console.log(recipe);
 

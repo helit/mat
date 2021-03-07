@@ -27,11 +27,12 @@ type SelectInputProps = {
   label: string,
   options: optionsData[],
   value: string,
+  id: string,
   variant?: 'filled' | 'outlined' | 'standard',
-  handleChange?: (v: any) => any
+  handleChange?: (v1: any, v2: string) => any
 };
 
-export default function SelectInput({label, options, value, variant, handleChange}: SelectInputProps) {
+export default function SelectInput({label, options, value, id, variant, handleChange}: SelectInputProps) {
   const classes = useStyles();
 
   return (
@@ -41,7 +42,7 @@ export default function SelectInput({label, options, value, variant, handleChang
         label={label}
         labelId="selectInput"
         value={value}
-        onChange={(event) => handleChange(event.target.value)}
+        onChange={(event) => handleChange(event.target.value, id)}
         variant={variant ? variant : 'standard'}
       >
         {options.map((option, key) => {

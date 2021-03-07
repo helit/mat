@@ -30,11 +30,12 @@ type AutoCompleteSelectProps = {
   label: string,
   options: optionsData[],
   value: optionsData,
+  id: string,
   variant?: 'filled' | 'outlined' | 'standard',
-  handleChange?: (v: any) => any
+  handleChange?: (v1: any, v2: string) => any
 };
 
-export const AutoCompleteSelect = ({label, options, value, variant, handleChange}: AutoCompleteSelectProps) => {
+export const AutoCompleteSelect = ({label, options, value, id, variant, handleChange}: AutoCompleteSelectProps) => {
   const classes = useStyles();
 
   return (
@@ -42,7 +43,7 @@ export const AutoCompleteSelect = ({label, options, value, variant, handleChange
       <Autocomplete
         id="auto-complete-select"
         options={options}
-        onChange={(event, value) => handleChange(value)}
+        onChange={(event, value) => handleChange(value, id)}
         value={value}
         getOptionLabel={(option) => option.name}
         style={{ width: 300 }}
