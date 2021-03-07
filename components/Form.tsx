@@ -1,27 +1,23 @@
 import React from 'react';
 import {
   Box,
-  Button
+  Typography
 } from '@material-ui/core';
 
 type FormProps = {
+  title: string,
+  type: string,
   children?: React.ReactNode
 };
 
-export const Form = ({children}: FormProps) => {
+export const Form = ({children, title, type}: FormProps) => {
   return (
     <div>
       <Box>
+        <Typography variant="h4" component="h1" gutterBottom>
+          {title}
+        </Typography>
         {children}
-        <Box
-          mt={2}
-          display="flex"
-          flexDirection="row-reverse"
-        >
-          <Button variant="contained" color="primary" >
-            Spara
-          </Button>
-        </Box>
       </Box>
     </div>
   );
