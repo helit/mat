@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -26,7 +26,6 @@ import { AutoCompleteSelect } from '../components/Input/AutoCompleteSelect';
 import TextInput from '../components/Input/TextInput';
 import NumberInput from '../components/Input/NumberInput';
 import SelectInput from '../components/Input/SelectInput';
-import { NetworkCheckOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -112,26 +111,19 @@ export default function Recept({ recipes, ingredients }) {
   }, [newIngredient]);
 
   const handleSaveRecipe = async () => {
-    console.log('Recipe', newRecipe);
-    console.log('Ingredients', newIngredientList);
-
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: newRecipe.name,
           url: newRecipe.url,
-          comment: newRecipe.comment
+          comment: newRecipe.comment,
+          ingredientList: newIngredientList
         })
     };
+
     const response = await fetch('http://localhost:3000/api/recipes', requestOptions);
     const data = await response.json();
-
-    if (!data) {
-      console.log(error);
-    } else {
-      console.log(data.id);
-    }
   };
 
   const updateRecipe = (value, id) => {
