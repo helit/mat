@@ -26,6 +26,8 @@ import { AutoCompleteSelect } from '../components/Input/AutoCompleteSelect';
 import TextInput from '../components/Input/TextInput';
 import NumberInput from '../components/Input/NumberInput';
 import SelectInput from '../components/Input/SelectInput';
+import NewIngredientModal from '../components/Input/NewIngredientModal';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +50,7 @@ Recept.getInitialProps = async () => {
   const ingredientsResp = await fetch('http://localhost:3000/api/ingredients');
   const recipes = await recipieResp.json();
   const ingredients = await ingredientsResp.json();
+
   return {
     recipes: recipes,
     ingredients: ingredients
@@ -111,19 +114,18 @@ export default function Recept({ recipes, ingredients }) {
   }, [newIngredient]);
 
   const handleSaveRecipe = async () => {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newRecipe.name,
-          url: newRecipe.url,
-          comment: newRecipe.comment,
-          ingredientList: newIngredientList
-        })
-    };
-
-    const response = await fetch('http://localhost:3000/api/recipes', requestOptions);
-    const data = await response.json();
+    axios.post(`http://localhost:3000/api/recipes`, {
+      name: newRecipe.name,
+      url: newRecipe.url,
+      comment: newRecipe.comment,
+      ingredientList: newIngredientList
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   };
 
   const updateRecipe = (value, id) => {
@@ -182,24 +184,26 @@ export default function Recept({ recipes, ingredients }) {
     <Container maxWidth="md">
       <Box my={4}>
         <Box my={4} display="flex" flexDirection="row-reverse">
-          <AddButton buttonText={'Nytt recept'}>
+          <NewIngredientModal />
+          <AddButton buttonText={'Recept'}>
             <Form title="Nytt Recept" type="recipe">
               <Box display="flex" flexDirection="column">
                 <TextInput
                   label={'Namn'}
-                  fullWidth={true}
+                  fullWidth
+                  required
                   id={'name'}
                   value={newRecipe.name}
                   handleChange={updateRecipe.bind(this)} />
                 <TextInput
                   label={'Länk'}
-                  fullWidth={true}
+                  fullWidth
                   id={'url'}
                   value={newRecipe.url}
                   handleChange={updateRecipe.bind(this)} />
                 <TextInput
                   label={'Kommentar'}
-                  fullWidth={true}
+                  fullWidth
                   id={'comment'}
                   value={newRecipe.comment}
                   handleChange={updateRecipe.bind(this)} />

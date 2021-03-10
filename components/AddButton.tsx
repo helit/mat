@@ -1,9 +1,13 @@
 import React from 'react';
+import {
+  Button,
+  Modal,
+  Backdrop,
+  Fade,
+  Box,
+  Paper
+} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,8 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
     },
     paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
@@ -40,7 +42,7 @@ export const AddButton = ({buttonText, children}: AddButtonProps) => {
   };
 
   return (
-    <div>
+    <Box ml={3}>
       <Button
         onClick={handleOpen}
         variant="contained"
@@ -62,11 +64,11 @@ export const AddButton = ({buttonText, children}: AddButtonProps) => {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
+          <Paper className={classes.paper}>
             {children}
-          </div>
+          </Paper>
         </Fade>
       </Modal>
-    </div>
+    </Box>
   );
 }

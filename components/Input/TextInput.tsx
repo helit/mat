@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
-  Theme,
-  makeStyles,
-  createStyles,
   FormControl,
   TextField,
 } from '@material-ui/core';
@@ -18,14 +16,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type TextInputProps = {
   label: string,
-  fullWidth: boolean,
+  fullWidth?: boolean,
   value: string,
-  id: string,
+  id?: string,
   variant?: 'filled' | 'outlined' | 'standard',
+  required?: boolean,
   handleChange?: (v1: any, v2: string) => any
 };
 
-export default function TextInput({label, fullWidth, value, id, variant, handleChange}: TextInputProps) {
+export default function TextInput({label, fullWidth, value, id, variant, required, handleChange}: TextInputProps) {
   const classes = useStyles();
 
   return (
@@ -34,6 +33,7 @@ export default function TextInput({label, fullWidth, value, id, variant, handleC
         label={label}
         fullWidth={fullWidth}
         value={value}
+        required={required}
         onChange={(event) => handleChange(event.target.value, id)}
         variant={variant ? variant : 'standard'}/>
     </FormControl>
