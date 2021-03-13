@@ -27,9 +27,9 @@ import AddIcon from '@material-ui/icons/Add';
 import KitchenIcon from '@material-ui/icons/Kitchen';
 
 // Components
-import { Form } from '../Form';
+import Form from '../Form';
 import TextInput from './TextInput';
-import { AutoCompleteSelect } from './AutoCompleteSelect';
+import AutoCompleteSelect from './AutoCompleteSelect';
 import NumberInput from './NumberInput';
 import SelectInput from './SelectInput';
 

@@ -1,10 +1,17 @@
 import React from 'react';
+
+// Material UI
 import {
-  Paper
+  Paper,
+  GridList,
+  GridListTile
 } from '@material-ui/core';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+
+import {
+  Theme,
+  createStyles,
+  makeStyles
+} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

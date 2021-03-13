@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
+// Material UI
 import {
   Box,
   Card,
@@ -8,6 +9,9 @@ import {
   Typography,
   IconButton
 } from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
+
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
 const useStyles = makeStyles({
@@ -26,8 +30,9 @@ type OverviewCardProps = {
   comment?: string
 };
 
-export const OverviewCard = ({preTitle, secondaryPreTitle, title, comment}: OverviewCardProps) => {
+export default function OverviewCard ({preTitle, secondaryPreTitle, title, comment}: OverviewCardProps) {
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <CardContent>

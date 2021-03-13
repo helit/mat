@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import fetch from 'isomorphic-fetch';
 
 // Material UI
@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 
 // Components
-import { PageTitle } from '../components/PageTitle';
+import PageTitle from '../components/PageTitle';
 import NewIngredientModal from '../components/Input/NewIngredientModal';
 import NewRecipeModal from '../components/Input/NewRecipeModal';
 

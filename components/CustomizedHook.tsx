@@ -136,7 +136,7 @@ type CustomizedHookProps = {
   list: JSON
 };
 
-export const CustomizedHook = ({label, list}: CustomizedHookProps) => {
+export default function CustomizedHook ({label, list}: CustomizedHookProps) {
   console.log(list);
   const {
     getRootProps,

@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Material UI
 import {
   Button,
   Modal,
@@ -7,7 +9,13 @@ import {
   Box,
   Paper
 } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+import {
+  makeStyles,
+  Theme,
+  createStyles
+} from '@material-ui/core/styles';
+
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,8 +37,9 @@ type AddButtonProps = {
   children?: React.ReactNode
 };
 
-export const AddButton = ({buttonText, children}: AddButtonProps) => {
+export default function AddButton ({buttonText, children}: AddButtonProps) {
   const classes = useStyles();
+
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {

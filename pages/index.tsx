@@ -1,12 +1,15 @@
 import React from 'react';
+
+// Material UI
 import {
   Container,
   Box,
   Grid
 } from '@material-ui/core';
-import Link from '../src/Link';
-import { PageTitle } from '../components/PageTitle';
-import { OverviewCard } from '../components/OverviewCard';
+
+// Components
+import PageTitle from '../components/PageTitle';
+import OverviewCard from '../components/OverviewCard';
 
 export default function Index() {
   return (
@@ -37,9 +40,6 @@ export default function Index() {
             />
           </Grid>
         </Grid>
-        <Link href="/nytt-recept" color="primary">
-          Lägg till nytt recept
-        </Link>
       </Box>
     </Container>
   );

@@ -1,4 +1,7 @@
 import React from 'react';
+import fetch from 'isomorphic-fetch';
+
+// Material UI
 import {
   Table,
   TableBody,
@@ -6,15 +9,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
-} from '@material-ui/core';
-import {
+  Paper,
   Container,
-  Box,
+  Box
 } from '@material-ui/core';
+
+// Components
 import NewIngredientModal from '../components/Input/NewIngredientModal';
-import { PageTitle } from '../components/PageTitle';
-import fetch from 'isomorphic-fetch';
+import PageTitle from '../components/PageTitle';
 
 Ingredienser.getInitialProps = async () => {
   const resp = await fetch('http://localhost:3000/api/ingredients');

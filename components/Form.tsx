@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Material UI
 import {
   Box,
   Typography
@@ -6,11 +8,10 @@ import {
 
 type FormProps = {
   title: string,
-  type: string,
   children?: React.ReactNode
 };
 
-export const Form = ({children, title, type}: FormProps) => {
+export default function Form ({children, title}: FormProps) {
   return (
     <div>
       <Box>

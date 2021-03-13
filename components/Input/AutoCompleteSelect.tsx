@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+// Material UI
 import {
-  Theme,
-  makeStyles,
-  createStyles,
   FormControl,
   TextField,
 } from '@material-ui/core';
+
+import {
+  makeStyles,
+  Theme,
+  createStyles
+} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,7 +40,7 @@ type AutoCompleteSelectProps = {
   handleChange?: (v1: any, v2: string) => any
 };
 
-export const AutoCompleteSelect = ({label, options, value, id, variant, handleChange}: AutoCompleteSelectProps) => {
+export default function AutoCompleteSelect ({label, options, value, id, variant, handleChange}: AutoCompleteSelectProps) {
   const classes = useStyles();
 
   return (
