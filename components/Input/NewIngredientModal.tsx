@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+
+// Material UI
 import {
   Box,
   Button,
@@ -6,15 +9,14 @@ import {
   Backdrop,
   Modal,
   Snackbar,
-  Color,
   Paper
 } from '@material-ui/core';
 import {
   makeStyles,
   Theme,
-  createStyles,
-  useTheme
+  createStyles
 } from '@material-ui/core/styles';
+
 import AddIcon from '@material-ui/icons/Add';
 
 // Components
@@ -53,9 +55,14 @@ const ingredientEmpty: Ingredient = {
   comment: ''
 };
 
-export default function NewIngredientModal() {
+type NewIngredientModalProps = {
+  title: string,
+  buttonText: string,
+};
+
+export default function NewIngredientModal({title, buttonText}: NewIngredientModalProps) {
   const classes = useStyles();
-  const theme = useTheme();
+  const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -95,12 +102,12 @@ export default function NewIngredientModal() {
         comment: ingredient.comment
     })
     .then(function (response) {
-      console.log(response);
       setIngredient(ingredientEmpty);
       setSnackMsg('Sparade ingrediensen ' + ingredient.name + '!');
       setAlertSeverity('success');
       setSnackbarOpen(true);
       setModalOpen(false);
+      router.push(router.pathname);
     })
     .catch(function (error) {
       console.log(error);
@@ -118,7 +125,7 @@ export default function NewIngredientModal() {
         color="primary"
         startIcon={<AddIcon />}
       >
-        Ingredient
+        {buttonText}
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -134,7 +141,7 @@ export default function NewIngredientModal() {
       >
         <Fade in={modalOpen}>
           <Paper className={classes.paper}>
-            <Form title="Ny Ingrediens" type="ingredient">
+            <Form title={title} type="ingredient">
               <Box display="flex" flexDirection="column">
                 <TextInput
                   label={'Namn'}
@@ -184,6 +191,7 @@ export default function NewIngredientModal() {
       </Modal>
       <Snackbar
         open={snackbarOpen}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} variant="filled" severity={alertSeverity}>

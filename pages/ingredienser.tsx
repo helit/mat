@@ -11,23 +11,23 @@ import {
 import {
   Container,
   Box,
-  Button
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import NewIngredientModal from '../components/Input/NewIngredientModal';
 import { PageTitle } from '../components/PageTitle';
 import fetch from 'isomorphic-fetch';
+
+Ingredienser.getInitialProps = async () => {
+  const resp = await fetch('http://localhost:3000/api/ingredients');
+  const json = await resp.json();
+  return {list: json};
+}
 
 export default function Ingredienser({list}) {
   return (
     <Container maxWidth="md">
       <Box my={4}>
         <Box my={4} display="flex" flexDirection="row-reverse">
-          <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}>
-            Ny ingrediens
-          </Button>
+          <NewIngredientModal title="Ny Ingrediens" buttonText="Ingrediens"/>
         </Box>
         <PageTitle text="Ingredienser"/>
         <TableContainer component={Paper}>
@@ -44,10 +44,8 @@ export default function Ingredienser({list}) {
             </TableHead>
             <TableBody>
               {list.map((list) => (
-                <TableRow key={list.name}>
-                  <TableCell component="th" scope="row">
-                    {list.id}
-                  </TableCell>
+                <TableRow key={list.id}>
+                  <TableCell>{list.id}</TableCell>
                   <TableCell>{list.name}</TableCell>
                   <TableCell>{list.category}</TableCell>
                   <TableCell>{list.subCategory}</TableCell>
@@ -61,10 +59,4 @@ export default function Ingredienser({list}) {
       </Box>
     </Container>
   )
-}
-
-Ingredienser.getInitialProps = async () => {
-  const resp = await fetch('http://localhost:3000/api/ingredients');
-  const json = await resp.json();
-  return {list: json};
 }

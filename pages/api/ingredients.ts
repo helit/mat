@@ -21,7 +21,7 @@ export default async function ingredientsApi(req: NextApiRequest, res: NextApiRe
 }
 
 const getIngredients = async (req, res, db) => {
-  const ingredients = await db.all('SELECT * FROM ingredients');
+  const ingredients = await db.all('SELECT * FROM ingredients ORDER BY id DESC');
 
   res.json(ingredients);
 }
