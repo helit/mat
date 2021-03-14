@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import axios from 'axios';
 
 // Material UI
@@ -15,12 +16,6 @@ import {
   Chip
 } from '@material-ui/core';
 
-import {
-  makeStyles,
-  Theme,
-  createStyles
-} from '@material-ui/core/styles';
-
 import { Alert } from '@material-ui/lab';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -33,30 +28,33 @@ import AutoCompleteSelect from './AutoCompleteSelect';
 import NumberInput from './NumberInput';
 import SelectInput from './SelectInput';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-      listStyle: 'none',
-      padding: theme.spacing(2),
-      margin: 0,
-    },
-    chip: {
-      margin: theme.spacing(0.5),
-    },
-  }),
-);
+const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledModalPaper = styled(Paper)`
+  max-width: 800px;
+  padding: 16px 32px 24px;
+  box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
+              0px 5px 8px 0px rgb(0 0 0 / 14%),
+              0px 1px 14px 0px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+`;
+
+const StyledChipWrapper = styled(Paper)`
+  margin: 0;
+  display: flex;
+  padding: 16px;
+  flex-wrap: wrap;
+  list-style: none;
+  justify-content: center;
+`;
+
+const StyledChip = styled(Chip)`
+  margin: 4px;
+`;
 
 interface Chip {
   key: number,
@@ -109,7 +107,6 @@ type NewRecipeModalProps = {
 };
 
 export default function NewRecipeModal({ title, buttonText, ingredients }: NewRecipeModalProps) {
-  const classes = useStyles();
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -156,20 +153,20 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
       comment: recipe.comment,
       ingredientList: newIngredientList
     })
-    .then(function (response) {
-      setRecipe(recipeEmpty);
-      setSnackMsg('Sparade receptet ' + recipe.name + '!');
-      setAlertSeverity('success');
-      setSnackbarOpen(true);
-      setModalOpen(false);
-      router.push(router.pathname);
-    })
-    .catch(function (error) {
-      console.log(error);
-      setSnackMsg('Kunde inte spara!');
-      setAlertSeverity('error');
-      setSnackbarOpen(true);
-    });
+      .then(function (response) {
+        setRecipe(recipeEmpty);
+        setSnackMsg('Sparade receptet ' + recipe.name + '!');
+        setAlertSeverity('success');
+        setSnackbarOpen(true);
+        setModalOpen(false);
+        router.push(router.pathname);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setSnackMsg('Kunde inte spara!');
+        setAlertSeverity('error');
+        setSnackbarOpen(true);
+      });
   }
 
   const updateIngredient = (value, id) => {
@@ -228,10 +225,9 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
       >
         {buttonText}
       </Button>
-      <Modal
+      <StyledModal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
         open={modalOpen}
         onClose={handleModalClose}
         closeAfterTransition
@@ -241,7 +237,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
         }}
       >
         <Fade in={modalOpen}>
-          <Paper className={classes.paper}>
+          <StyledModalPaper>
             <Form title={title} type="ingredient">
               <Box display="flex" flexDirection="column">
                 <TextInput
@@ -312,21 +308,20 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                 </Box>
               </Box>
               <Box>
-                <Paper elevation={0} component="ul" className={classes.root}>
+                <StyledChipWrapper elevation={0} component="ul">
                   {newIngredientList.map((data) => {
                     return (
                       <li key={data.key}>
-                        <Chip
+                        <StyledChip
                           icon={<KitchenIcon />}
                           variant="outlined"
                           label={data.label}
                           onDelete={handleDelete(data)}
-                          className={classes.chip}
                         />
                       </li>
                     );
                   })}
-                </Paper>
+                </StyledChipWrapper>
               </Box>
               <Box
                 mt={2}
@@ -338,9 +333,9 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                 </Button>
               </Box>
             </Form>
-          </Paper>
+          </StyledModalPaper>
         </Fade>
-      </Modal>
+      </StyledModal>
       <Snackbar
         open={snackbarOpen}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

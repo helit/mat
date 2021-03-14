@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Material UI
 import {
@@ -10,18 +11,15 @@ import {
   IconButton
 } from '@material-ui/core';
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  preTitle: {
-    fontSize: 14,
-  }
-});
+const StyledCard = styled(Card)`
+  min-width: 275px;
+`;
+
+const StyledTypography = styled(Typography)`
+  font-size: 14px;
+`;
 
 type OverviewCardProps = {
   preTitle?: string,
@@ -30,19 +28,17 @@ type OverviewCardProps = {
   comment?: string
 };
 
-export default function OverviewCard ({preTitle, secondaryPreTitle, title, comment}: OverviewCardProps) {
-  const classes = useStyles();
-
+export default function OverviewCard({ preTitle, secondaryPreTitle, title, comment }: OverviewCardProps) {
   return (
-    <Card className={classes.root}>
+    <StyledCard>
       <CardContent>
         <Box display="flex" justifyContent="space-between">
-          <Typography className={classes.preTitle} color="textSecondary" gutterBottom>
+          <StyledTypography color="textSecondary" gutterBottom>
             {preTitle}
-          </Typography>
-          <Typography className={classes.preTitle} color="textSecondary" gutterBottom>
+          </StyledTypography>
+          <StyledTypography color="textSecondary" gutterBottom>
             {secondaryPreTitle}
-          </Typography>
+          </StyledTypography>
         </Box>
         <Typography variant="h5" gutterBottom>
           {title}
@@ -56,6 +52,6 @@ export default function OverviewCard ({preTitle, secondaryPreTitle, title, comme
           <MenuBookIcon />
         </IconButton>
       </CardActions>
-    </Card>
+    </StyledCard>
   );
 };

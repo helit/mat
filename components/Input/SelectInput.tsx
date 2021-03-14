@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Material UI
 import {
@@ -8,20 +9,10 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-import {
-  makeStyles,
-  Theme,
-  createStyles
-} from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-  }),
-);
+const StyledFormControl = styled(FormControl)`
+  margin: 8px;
+  min-width: 120px;
+`;
 
 interface optionsData {
   name: string,
@@ -37,11 +28,9 @@ type SelectInputProps = {
   handleChange?: (v1: any, v2: string) => any
 };
 
-export default function SelectInput({label, options, value, id, variant, handleChange}: SelectInputProps) {
-  const classes = useStyles();
-
+export default function SelectInput({ label, options, value, id, variant, handleChange }: SelectInputProps) {
   return (
-    <FormControl variant={variant ? variant : 'standard'} className={classes.formControl}>
+    <StyledFormControl variant={variant ? variant : 'standard'}>
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}
@@ -58,6 +47,6 @@ export default function SelectInput({label, options, value, id, variant, handleC
           );
         })}
       </Select>
-    </FormControl>
+    </StyledFormControl>
   );
 }

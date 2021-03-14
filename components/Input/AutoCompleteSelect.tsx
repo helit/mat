@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Material UI
 import {
@@ -6,20 +7,11 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import {
-  makeStyles,
-  Theme,
-  createStyles
-} from '@material-ui/core/styles';
+const StyledFormControl = styled(FormControl)`
+  margin: 8px;
+  min-width: 120px;
+`;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-  }),
-);
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 interface optionsData {
@@ -40,11 +32,9 @@ type AutoCompleteSelectProps = {
   handleChange?: (v1: any, v2: string) => any
 };
 
-export default function AutoCompleteSelect ({label, options, value, id, variant, handleChange}: AutoCompleteSelectProps) {
-  const classes = useStyles();
-
+export default function AutoCompleteSelect({ label, options, value, id, variant, handleChange }: AutoCompleteSelectProps) {
   return (
-    <FormControl variant={variant ? variant : 'standard'} className={classes.formControl}>
+    <StyledFormControl variant={variant ? variant : 'standard'}>
       <Autocomplete
         id="auto-complete-select"
         options={options}
@@ -54,6 +44,6 @@ export default function AutoCompleteSelect ({label, options, value, id, variant,
         style={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={label} variant="outlined" />}
       />
-    </FormControl>
+    </StyledFormControl>
   );
 }

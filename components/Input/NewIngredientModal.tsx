@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import axios from 'axios';
 
 // Material UI
@@ -27,19 +28,20 @@ import AddIcon from '@material-ui/icons/Add';
 import Form from '../Form';
 import TextInput from './TextInput';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    }
-  }),
-);
+const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledModalPaper = styled(Paper)`
+  max-width: 800px;
+  padding: 16px 32px 24px;
+  box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
+              0px 5px 8px 0px rgb(0 0 0 / 14%),
+              0px 1px 14px 0px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+`;
 
 interface Ingredient {
   name: string,
@@ -62,8 +64,7 @@ type NewIngredientModalProps = {
   buttonText: string,
 };
 
-export default function NewIngredientModal({title, buttonText}: NewIngredientModalProps) {
-  const classes = useStyles();
+export default function NewIngredientModal({ title, buttonText }: NewIngredientModalProps) {
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -97,26 +98,26 @@ export default function NewIngredientModal({title, buttonText}: NewIngredientMod
 
   const handleSave = () => {
     axios.post(`http://localhost:3000/api/ingredients`, {
-        name: ingredient.name,
-        category: ingredient.category,
-        subCategory: ingredient.subCategory,
-        brand: ingredient.brand,
-        comment: ingredient.comment
+      name: ingredient.name,
+      category: ingredient.category,
+      subCategory: ingredient.subCategory,
+      brand: ingredient.brand,
+      comment: ingredient.comment
     })
-    .then(function (response) {
-      setIngredient(ingredientEmpty);
-      setSnackMsg('Sparade ingrediensen ' + ingredient.name + '!');
-      setAlertSeverity('success');
-      setSnackbarOpen(true);
-      setModalOpen(false);
-      router.push(router.pathname);
-    })
-    .catch(function (error) {
-      console.log(error);
-      setSnackMsg('Kunde inte spara!');
-      setAlertSeverity('error');
-      setSnackbarOpen(true);
-    });
+      .then(function (response) {
+        setIngredient(ingredientEmpty);
+        setSnackMsg('Sparade ingrediensen ' + ingredient.name + '!');
+        setAlertSeverity('success');
+        setSnackbarOpen(true);
+        setModalOpen(false);
+        router.push(router.pathname);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setSnackMsg('Kunde inte spara!');
+        setAlertSeverity('error');
+        setSnackbarOpen(true);
+      });
   }
 
   return (
@@ -129,10 +130,9 @@ export default function NewIngredientModal({title, buttonText}: NewIngredientMod
       >
         {buttonText}
       </Button>
-      <Modal
+      <StyledModal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
         open={modalOpen}
         onClose={handleModalClose}
         closeAfterTransition
@@ -142,7 +142,7 @@ export default function NewIngredientModal({title, buttonText}: NewIngredientMod
         }}
       >
         <Fade in={modalOpen}>
-          <Paper className={classes.paper}>
+          <StyledModalPaper>
             <Form title={title} type="ingredient">
               <Box display="flex" flexDirection="column">
                 <TextInput
@@ -188,9 +188,9 @@ export default function NewIngredientModal({title, buttonText}: NewIngredientMod
                 </Button>
               </Box>
             </Form>
-          </Paper>
+          </StyledModalPaper>
         </Fade>
-      </Modal>
+      </StyledModal>
       <Snackbar
         open={snackbarOpen}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
