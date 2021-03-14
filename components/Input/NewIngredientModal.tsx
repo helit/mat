@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { useTheme } from '@material-ui/core/styles';
 import axios from 'axios';
 
 // Material UI
@@ -11,14 +12,9 @@ import {
   Backdrop,
   Modal,
   Snackbar,
-  Paper
+  Paper,
+  Color
 } from '@material-ui/core';
-
-import {
-  makeStyles,
-  Theme,
-  createStyles
-} from '@material-ui/core/styles';
 
 import { Alert } from '@material-ui/lab';
 
@@ -64,12 +60,13 @@ type NewIngredientModalProps = {
 };
 
 export default function NewIngredientModal({ title, buttonText }: NewIngredientModalProps) {
+  const theme = useTheme();
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackMsg, setSnackMsg] = useState('');
-  const [alertSeverity, setAlertSeverity] = useState('info');
+  const [alertSeverity, setAlertSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info');
   const [ingredient, setIngredient] = useState<Ingredient>(ingredientEmpty)
 
   const handleModalOpen = () => {
@@ -142,7 +139,7 @@ export default function NewIngredientModal({ title, buttonText }: NewIngredientM
       >
         <Fade in={modalOpen}>
           <StyledModalPaper>
-            <Form title={title} type="ingredient">
+            <Form title={title}>
               <Box display="flex" flexDirection="column">
                 <TextInput
                   label={'Namn'}

@@ -23,7 +23,7 @@ Recept.getInitialProps = async () => {
   const recipieResp = await fetch('http://localhost:3000/api/recipes');
   const ingredientsResp = await fetch('http://localhost:3000/api/ingredients');
   const recipes = await recipieResp.json();
-  const ingredients = await ingredientsResp.json();
+  const ingredients: [] = await ingredientsResp.json();
 
   return {
     recipes: recipes,
@@ -36,8 +36,8 @@ export default function Recept({ recipes, ingredients }) {
     <Container maxWidth="md">
       <Box my={4}>
         <Box my={4} display="flex" flexDirection="row-reverse">
-          <NewIngredientModal title="Ny Ingrediens" buttonText="Ingrediens"/>
-          <NewRecipeModal title="Nytt Recept" buttonText="Recept" ingredients={ingredients}/>
+          <NewIngredientModal title="Ny Ingrediens" buttonText="Ingrediens" />
+          <NewRecipeModal title="Nytt Recept" buttonText="Recept" ingredients={ingredients} />
         </Box>
         <PageTitle text="Recept" />
         <TableContainer component={Paper}>

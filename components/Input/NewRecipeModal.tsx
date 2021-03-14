@@ -102,7 +102,7 @@ const recipeEmpty: Recipe = {
 type NewRecipeModalProps = {
   title: string,
   buttonText: string,
-  ingredients: {}
+  ingredients: []
 };
 
 export default function NewRecipeModal({ title, buttonText, ingredients }: NewRecipeModalProps) {
@@ -111,7 +111,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
   const [modalOpen, setModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackMsg, setSnackMsg] = useState('');
-  const [alertSeverity, setAlertSeverity] = useState('info');
+  const [alertSeverity, setAlertSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info');
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
   const [recipe, setRecipe] = useState<Recipe>(recipeEmpty);
   const [ingredient, setIngredient] = useState<Ingredient>(null);
@@ -237,7 +237,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
       >
         <Fade in={modalOpen}>
           <StyledModalPaper>
-            <Form title={title} type="ingredient">
+            <Form title={title}>
               <Box display="flex" flexDirection="column">
                 <TextInput
                   label={'Namn'}
