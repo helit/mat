@@ -19,19 +19,19 @@ import NewIngredientModal from '../components/Input/NewIngredientModal';
 import PageTitle from '../components/PageTitle';
 
 Ingredienser.getInitialProps = async () => {
-  const resp = await fetch('http://localhost:3000/api/ingredients');
+  const resp = await fetch(`${process.env.HOST}/api/ingredients`);
   const json = await resp.json();
-  return {list: json};
+  return { list: json };
 }
 
-export default function Ingredienser({list}) {
+export default function Ingredienser({ list }) {
   return (
     <Container maxWidth="md">
       <Box my={4}>
         <Box my={4} display="flex" flexDirection="row-reverse">
-          <NewIngredientModal title="Ny Ingrediens" buttonText="Ingrediens"/>
+          <NewIngredientModal title="Ny Ingrediens" buttonText="Ingrediens" />
         </Box>
-        <PageTitle text="Ingredienser"/>
+        <PageTitle text="Ingredienser" />
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>

@@ -93,7 +93,7 @@ export default function NewIngredientModal({ title, buttonText }: NewIngredientM
   }
 
   const handleSave = () => {
-    axios.post(`http://localhost:3000/api/ingredients`, {
+    axios.post(`${process.env.HOST}/api/ingredients`, {
       name: ingredient.name,
       category: ingredient.category,
       subCategory: ingredient.subCategory,
