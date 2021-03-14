@@ -38,9 +38,8 @@ const StyledModalPaper = styled(Paper)`
   max-width: 800px;
   padding: 16px 32px 24px;
   box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
-              0px 5px 8px 0px rgb(0 0 0 / 14%),
-              0px 1px 14px 0px rgb(0 0 0 / 12%);
-  border-radius: 4px;
+    0px 5px 8px 0px rgb(0 0 0 / 14%),
+    0px 1px 14px 0px rgb(0 0 0 / 12%);
 `;
 
 const StyledChipWrapper = styled(Paper)`
@@ -261,7 +260,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                   handleChange={updateRecipe.bind(this)} />
               </Box>
               <Box
-                mt={4}
+                mt={2}
                 display="flex"
               >
                 <AutoCompleteSelect
@@ -314,6 +313,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                       <li key={data.key}>
                         <StyledChip
                           icon={<KitchenIcon />}
+                          color="primary"
                           variant="outlined"
                           label={data.label}
                           onDelete={handleDelete(data)}

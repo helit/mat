@@ -41,7 +41,6 @@ export default function AutoCompleteSelect({ label, options, value, id, variant,
         onChange={(event, value) => handleChange(value, id)}
         value={value}
         getOptionLabel={(option) => option.name}
-        style={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={label} variant="outlined" />}
       />
     </StyledFormControl>
