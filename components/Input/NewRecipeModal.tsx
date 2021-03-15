@@ -146,7 +146,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
   }
 
   const handleSave = () => {
-    axios.post(`${process.env.HOST}/api/recipes`, {
+    axios.post(`${process.env.hostname}/api/recipes`, {
       name: recipe.name,
       url: recipe.url,
       comment: recipe.comment,
