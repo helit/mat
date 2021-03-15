@@ -19,7 +19,7 @@ import NewIngredientModal from '../components/Input/NewIngredientModal';
 import PageTitle from '../components/PageTitle';
 
 Ingredienser.getInitialProps = async () => {
-  const resp = await fetch(`${process.env.HOST}/api/ingredients`);
+  const resp = await fetch(`${process.env.hostname}/api/ingredients`);
   const json = await resp.json();
   return { list: json };
 }

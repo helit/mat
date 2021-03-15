@@ -20,8 +20,8 @@ import NewIngredientModal from '../components/Input/NewIngredientModal';
 import NewRecipeModal from '../components/Input/NewRecipeModal';
 
 Recept.getInitialProps = async () => {
-  const recipieResp = await fetch(`${process.env.HOST}/api/recipes`);
-  const ingredientsResp = await fetch(`${process.env.HOST}/api/ingredients`);
+  const recipieResp = await fetch(`${process.env.hostname}/api/recipes`);
+  const ingredientsResp = await fetch(`${process.env.hostname}/api/ingredients`);
   const recipes = await recipieResp.json();
   const ingredients: [] = await ingredientsResp.json();
 
