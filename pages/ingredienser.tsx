@@ -1,5 +1,6 @@
 import React from 'react';
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
+import { host } from '../config';
 
 // Material UI
 import {
@@ -11,20 +12,29 @@ import {
   TableRow,
   Paper,
   Container,
-  Box
+  Box,
 } from '@material-ui/core';
 
 // Components
 import NewIngredientModal from '../components/Input/NewIngredientModal';
 import PageTitle from '../components/PageTitle';
 
-Ingredienser.getInitialProps = async () => {
-  const resp = await fetch(`${process.env.hostname}/api/ingredients`);
-  const json = await resp.json();
-  return { list: json };
+export async function getStaticProps(context) {
+  let ingredients = await axios.get(`${host}/api/ingredients`)
+    .then(response => response.data.ingredientsData);
+
+  if (!ingredients) {
+    ingredients = []
+  }
+
+  return {
+    props: {
+      ingredients: ingredients
+    }
+  }
 }
 
-export default function Ingredienser({ list }) {
+export default function Ingredienser({ ingredients }) {
   return (
     <Container maxWidth="md">
       <Box my={4}>
@@ -45,14 +55,14 @@ export default function Ingredienser({ list }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {list.map((list) => (
-                <TableRow key={list.id}>
-                  <TableCell>{list.id}</TableCell>
-                  <TableCell>{list.name}</TableCell>
-                  <TableCell>{list.category}</TableCell>
-                  <TableCell>{list.subCategory}</TableCell>
-                  <TableCell>{list.brand}</TableCell>
-                  <TableCell>{list.comment}</TableCell>
+              {ingredients.map((ingredient) => (
+                <TableRow key={ingredient.id}>
+                  <TableCell>{ingredient.id}</TableCell>
+                  <TableCell>{ingredient.name}</TableCell>
+                  <TableCell>{ingredient.category}</TableCell>
+                  <TableCell>{ingredient.subCategory}</TableCell>
+                  <TableCell>{ingredient.brand}</TableCell>
+                  <TableCell>{ingredient.comment}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Ingredient } from '../../models';
 
 // Material UI
 import {
@@ -14,19 +15,10 @@ const StyledFormControl = styled(FormControl)`
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-interface optionsData {
-  id: number,
-  name: string,
-  brand: string,
-  category: string,
-  subCategory: string,
-  comment: string,
-}
-
 type AutoCompleteSelectProps = {
   label: string,
-  options: optionsData[],
-  value: optionsData,
+  options: Ingredient[],
+  value: Ingredient,
   id: string,
   variant?: 'filled' | 'outlined' | 'standard',
   handleChange?: (v1: any, v2: string) => any

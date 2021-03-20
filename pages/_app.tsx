@@ -8,8 +8,6 @@ import theme from '../src/theme';
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
-  console.log(process.env.hostname);
-
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
