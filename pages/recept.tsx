@@ -20,7 +20,7 @@ import PageTitle from '../components/PageTitle';
 import NewIngredientModal from '../components/Input/NewIngredientModal';
 import NewRecipeModal from '../components/Input/NewRecipeModal';
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   let recipes = await axios.get(`${host}/api/recipes`)
     .then(response => response.data.recipesData);
   let ingredients = await axios.get(`${host}/api/ingredients`)
