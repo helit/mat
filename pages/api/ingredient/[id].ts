@@ -1,18 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import db from '../../../utils/db';
 
 export default async function getIngredientById(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'GET') {
-    res.status(500).json({message: 'Only accepts GET requests.'})
+  try {
+    const ingredient = await db.collection('ingredients').doc(req.query.id as string)
+      .get();
+    res.status(200).json(ingredient);
+  } catch (e) {
+    res.status(400).end();
   }
-
-  const db = await open({
-    filename: './matslumparn_db.sqlite',
-    driver: sqlite3.Database
-  })
-
-  const ingredient = await db.get('SELECT * FROM ingredients WHERE id = ?', [req.query.id]);
-
-  res.json(ingredient);
 }
