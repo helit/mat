@@ -11,7 +11,7 @@ module.exports = (phase, { defaultConfig }) => {
 
   return {
     env: {
-      hostname: 'http://mat.henlit.se'
+      hostname: 'https://mat.henlit.se'
     },
   }
 }

@@ -8,8 +8,6 @@ import theme from '../src/theme';
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
-  console.log(process.env.hostname);
-
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
@@ -20,7 +18,7 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
-        <title>Matslumparn</title>
+        <title>Mat</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>

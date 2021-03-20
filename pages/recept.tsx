@@ -1,5 +1,6 @@
 import React from 'react';
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
+import { host } from '../config';
 
 // Material UI
 import {
@@ -19,16 +20,26 @@ import PageTitle from '../components/PageTitle';
 import NewIngredientModal from '../components/Input/NewIngredientModal';
 import NewRecipeModal from '../components/Input/NewRecipeModal';
 
-Recept.getInitialProps = async () => {
-  const recipieResp = await fetch(`${process.env.hostname}/api/recipes`);
-  const ingredientsResp = await fetch(`${process.env.hostname}/api/ingredients`);
-  const recipes = await recipieResp.json();
-  const ingredients: [] = await ingredientsResp.json();
+export async function getStaticProps(context) {
+  let recipes = await axios.get(`${host}/api/recipes`)
+    .then(response => response.data.recipesData);
+  let ingredients = await axios.get(`${host}/api/ingredients`)
+    .then(response => response.data.ingredientsData);
+
+  if (!recipes) {
+    recipes = [];
+  }
+
+  if (!ingredients) {
+    ingredients = [];
+  }
 
   return {
-    recipes: recipes,
-    ingredients: ingredients
-  };
+    props: {
+      recipes: recipes,
+      ingredients: ingredients
+    }
+  }
 }
 
 export default function Recept({ recipes, ingredients }) {
@@ -44,8 +55,7 @@ export default function Recept({ recipes, ingredients }) {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell>Namn</TableCell>
+                <TableCell>Titel</TableCell>
                 <TableCell>Url</TableCell>
                 <TableCell>Kommentar</TableCell>
               </TableRow>
@@ -53,8 +63,7 @@ export default function Recept({ recipes, ingredients }) {
             <TableBody>
               {recipes.map((recipe) => (
                 <TableRow key={recipe.id}>
-                  <TableCell>{recipe.id}</TableCell>
-                  <TableCell>{recipe.name}</TableCell>
+                  <TableCell>{recipe.title}</TableCell>
                   <TableCell>
                     <a href={recipe.url}>Recept</a>
                   </TableCell>

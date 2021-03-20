@@ -3,6 +3,12 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import axios from 'axios';
 
+// Models
+import { Ingredient, Recipe, RecipeIngredient } from '../../models';
+
+// Helpers
+import { stringToSlug, getChipLabel } from '../../helpers';
+
 // Material UI
 import {
   Box,
@@ -56,47 +62,22 @@ const StyledChip = styled(Chip)`
 `;
 
 interface Chip {
-  key: number,
+  key: string,
   label: string
 }
 
-interface Recipe {
-  name: string,
-  url: string,
-  comment: string,
-}
-
-interface Ingredient {
-  id: number,
-  name: string,
-  brand: string,
-  category: string,
-  subCategory: string,
-  comment: string,
-}
-
-interface NewIngredient {
-  key: number,
-  label: string,
-  ingredientId: number,
-  recipeId: number,
-  amount: number | string,
-  unit: string
-}
-
-const newIngredientEmpty: NewIngredient = {
-  key: null,
-  label: '',
-  ingredientId: null,
-  recipeId: null,
+const recipeIngredienEmpty: RecipeIngredient = {
+  ingredient: null,
   amount: '',
   unit: ''
 };
 
 const recipeEmpty: Recipe = {
-  name: '',
+  title: '',
+  slug: '',
   url: '',
   comment: '',
+  ingredients: []
 };
 
 type NewRecipeModalProps = {
@@ -108,19 +89,46 @@ type NewRecipeModalProps = {
 export default function NewRecipeModal({ title, buttonText, ingredients }: NewRecipeModalProps) {
   const router = useRouter();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackMsg, setSnackMsg] = useState('');
-  const [alertSeverity, setAlertSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info');
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
-  const [recipe, setRecipe] = useState<Recipe>(recipeEmpty);
-  const [ingredient, setIngredient] = useState<Ingredient>(null);
-  const [newIngredient, setNewIngredient] = useState<NewIngredient>(newIngredientEmpty);
-  const [newIngredientList, setNewIngredientList] = useState<NewIngredient[]>([]);
+  const [
+    modalOpen,
+    setModalOpen
+  ] = useState(false);
+  const [
+    snackbarOpen,
+    setSnackbarOpen
+  ] = useState(false);
+  const [
+    snackMsg,
+    setSnackMsg
+  ] = useState('');
+  const [
+    alertSeverity,
+    setAlertSeverity
+  ] = useState<'info' | 'success' | 'error' | 'warning'>('info');
+  const [
+    buttonDisabled,
+    setButtonDisabled
+  ] = useState<boolean>(true);
+  const [
+    recipe,
+    setRecipe
+  ] = useState<Recipe>(recipeEmpty);
+  const [
+    ingredient,
+    setIngredient
+  ] = useState<Ingredient>(null);
+  const [
+    newRecipeIngredient,
+    setNewRecipeIngredient
+  ] = useState<RecipeIngredient>(recipeIngredienEmpty);
+  const [
+    newRecipeIngredients,
+    setNewRecipeIngredients
+  ] = useState<RecipeIngredient[]>([]);
 
   useEffect(() => {
     validateIngredientInputs();
-  }, [newIngredient]);
+  }, [newRecipeIngredient]);
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -130,7 +138,10 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
     setModalOpen(false);
   };
 
-  const handleSnackbarClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+  const handleSnackbarClose = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -146,15 +157,16 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
   }
 
   const handleSave = () => {
-    axios.post(`${process.env.hostname}/api/recipes`, {
-      name: recipe.name,
+    axios.post('/api/recipes', {
+      title: recipe.title,
+      slug: stringToSlug(recipe.title),
       url: recipe.url,
       comment: recipe.comment,
-      ingredientList: newIngredientList
+      ingredients: newRecipeIngredients
     })
       .then(function (response) {
         setRecipe(recipeEmpty);
-        setSnackMsg('Sparade receptet ' + recipe.name + '!');
+        setSnackMsg('Sparade receptet ' + recipe.title + '!');
         setAlertSeverity('success');
         setSnackbarOpen(true);
         setModalOpen(false);
@@ -169,18 +181,16 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
   }
 
   const updateIngredient = (value, id) => {
+    console.log(value);
     if (id === 'ingredient') {
-      value.id = value.id ? value.id : 0;
       setIngredient(value);
-      setNewIngredient({
-        ...newIngredient,
-        key: value.id,
-        label: value.name,
-        ingredientId: value.id,
+      setNewRecipeIngredient({
+        ...newRecipeIngredient,
+        ingredient: value
       });
     } else {
-      setNewIngredient({
-        ...newIngredient,
+      setNewRecipeIngredient({
+        ...newRecipeIngredient,
         [id]: value
       });
     }
@@ -188,9 +198,9 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
 
   const validateIngredientInputs = () => {
     if (
-      newIngredient.ingredientId !== null &&
-      newIngredient.amount > 0 &&
-      newIngredient.unit !== ''
+      newRecipeIngredient.ingredient !== null &&
+      newRecipeIngredient.amount > 0 &&
+      newRecipeIngredient.unit !== ''
     ) {
       setButtonDisabled(false);
     } else {
@@ -199,17 +209,16 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
   };
 
   const handleAddIngredient = () => {
-    newIngredient.label += ', ' + newIngredient.amount + ' ' + newIngredient.unit;
-    setNewIngredientList([...newIngredientList, newIngredient]);
-    setNewIngredient(newIngredientEmpty);
+    setNewRecipeIngredients([...newRecipeIngredients, newRecipeIngredient]);
+    setNewRecipeIngredient(recipeIngredienEmpty);
     setIngredient(null);
     setButtonDisabled(true);
   };
 
-  const handleDelete = (ingredientToDelete: NewIngredient) => () => {
-    setNewIngredientList(
+  const handleDelete = (ingredientToDelete: RecipeIngredient) => () => {
+    setNewRecipeIngredients(
       (ingredients) => ingredients.filter(
-        (ingredient) => ingredient.key !== ingredientToDelete.key
+        (ingredient) => ingredient.ingredient.id !== ingredientToDelete.ingredient.id
       )
     );
   };
@@ -240,11 +249,11 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
             <Form title={title}>
               <Box display="flex" flexDirection="column">
                 <TextInput
-                  label={'Namn'}
+                  label={'Titel'}
                   fullWidth
                   required
-                  id={'name'}
-                  value={recipe.name}
+                  id={'title'}
+                  value={recipe.title}
                   handleChange={updateRecipe.bind(this)} />
                 <TextInput
                   label={'Receptlänk'}
@@ -274,7 +283,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                   fullWidth={false}
                   variant={'outlined'}
                   id={'amount'}
-                  value={newIngredient.amount}
+                  value={newRecipeIngredient.amount}
                   handleChange={updateIngredient.bind(this)} />
                 <SelectInput
                   label={'Enhet'}
@@ -292,7 +301,7 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
                   ]}
                   variant={'outlined'}
                   id={'unit'}
-                  value={newIngredient.unit}
+                  value={newRecipeIngredient.unit}
                   handleChange={updateIngredient.bind(this)} />
                 <Box
                   alignSelf="center"
@@ -308,15 +317,15 @@ export default function NewRecipeModal({ title, buttonText, ingredients }: NewRe
               </Box>
               <Box>
                 <StyledChipWrapper elevation={0} component="ul">
-                  {newIngredientList.map((data) => {
+                  {newRecipeIngredients.map((recipeIngredient) => {
                     return (
-                      <li key={data.key}>
+                      <li key={recipeIngredient.ingredient.id}>
                         <StyledChip
                           icon={<KitchenIcon />}
                           color="primary"
                           variant="outlined"
-                          label={data.label}
-                          onDelete={handleDelete(data)}
+                          label={getChipLabel(recipeIngredient)}
+                          onDelete={handleDelete(recipeIngredient)}
                         />
                       </li>
                     );

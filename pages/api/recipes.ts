@@ -1,24 +1,15 @@
 // Watching API tutorial at https://www.youtube.com/watch?v=PxiQDo0CmDE
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import db from '../../utils/db';
 
-export default async function recipesApi(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const db = await open({
-    filename: './matslumparn_db.sqlite',
-    driver: sqlite3.Database
-  });
-
+export default async function recipesApi(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'GET':
-      getRecipes(req, res, db);
+      getRecipes(req, res);
       break;
     case 'POST':
-      postRecipe(req, res, db);
+      postRecipe(req, res);
       break;
 
     default:
@@ -26,45 +17,39 @@ export default async function recipesApi(
   }
 }
 
-const getRecipes = async (req, res, db) => {
-  const recipes = await db.all('SELECT * FROM recipes');
-
-  res.json(recipes);
+const getRecipes = async (req, res) => {
+  try {
+    const recipes = await db.collection('recipes').orderBy('created').get();
+    const recipesData = recipes.docs.map(recipe => ({
+      id: recipe.id,
+      ...recipe.data()
+    }));
+    res.status(200).json({ recipesData });
+  } catch (e) {
+    res.status(400).end();
+  }
 }
 
-const postRecipe = async (req, res, db) => {
-  // Update recipes table
-  const statement = await db.prepare(
-    'INSERT INTO recipes (name, url, comment) VALUES (?, ?, ?)'
-  );
+const postRecipe = async (req, res) => {
+  try {
+    const {
+      name,
+      url,
+      comment
+    } = req.body;
+    const recipes = await db.collection('recipes').get();
+    const recipesData = recipes.docs.map(recipe => recipe.data());
 
-  const result = await statement.run(
-    req.body.name,
-    req.body.url,
-    req.body.comment
-  );
-
-  const newRecipe =
-    await db.get('SELECT * FROM recipes WHERE id = ?', [result.lastID]);
-
-  // Update recipe<->ingredient relational table
-  const ingredientList = req.body.ingredientList;
-  let values = [];
-  ingredientList.map((ingredient) => {
-    values.push(
-      "("+newRecipe.id+","
-      +ingredient.ingredientId+","
-      +ingredient.amount+",'"
-      +ingredient.unit+"')"
-    );
-  });
-
-  let sql = `INSERT INTO recipe_ingredient
-    (recipeId, ingredientId, amount, unit) VALUES `;
-  sql += values.join(',');
-
-  const statement2 = await db.prepare(sql);
-  await statement2.run();
-
-  res.json(newRecipe);
+    if (recipesData.some(recipe => recipe.name === name)) {
+      res.status(400).end();
+    } else {
+      const { id } = await db.collection('recipes').add({
+        ...req.body,
+        created: new Date().toISOString(),
+      });
+      res.status(200).json({ id });
+    }
+  } catch (e) {
+    res.status(400).end();
+  }
 }

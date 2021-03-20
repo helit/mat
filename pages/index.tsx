@@ -15,7 +15,7 @@ export default function Index() {
   return (
     <Container maxWidth="sm">
       <Box my={4}>
-        <PageTitle text="Matsedel"/>
+        <PageTitle text="Matsedel" />
         <Grid
           container
           direction="column"
