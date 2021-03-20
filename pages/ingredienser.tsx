@@ -19,7 +19,7 @@ import {
 import NewIngredientModal from '../components/Input/NewIngredientModal';
 import PageTitle from '../components/PageTitle';
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   let ingredients = await axios.get(`${host}/api/ingredients`)
     .then(response => response.data.ingredientsData);
 
@@ -46,7 +46,6 @@ export default function Ingredienser({ ingredients }) {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Id</TableCell>
                 <TableCell>Namn</TableCell>
                 <TableCell>Kategori</TableCell>
                 <TableCell>Underkategori</TableCell>
@@ -57,7 +56,6 @@ export default function Ingredienser({ ingredients }) {
             <TableBody>
               {ingredients.map((ingredient) => (
                 <TableRow key={ingredient.id}>
-                  <TableCell>{ingredient.id}</TableCell>
                   <TableCell>{ingredient.name}</TableCell>
                   <TableCell>{ingredient.category}</TableCell>
                   <TableCell>{ingredient.subCategory}</TableCell>
